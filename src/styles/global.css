@@ -165,17 +165,6 @@ pre::before {
 	opacity: 0.9;
 }
 
-pre::after {
-	content: '';
-	position: absolute;
-	right: 0;
-	top: 0;
-	bottom: 0;
-	width: 2px;
-	background: linear-gradient(180deg, transparent, rgba(126, 231, 135, 0.25), transparent);
-	pointer-events: none;
-}
-
 pre > code {
 	all: unset;
 	font-family: var(--font-mono);
