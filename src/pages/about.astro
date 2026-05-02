@@ -1,0 +1,27 @@
+---
+import Layout from '../layouts/BlogPost.astro';
+---
+
+<Layout
+	title="about"
+	description="about ash"
+	pubDate={new Date('2026-05-02')}
+>
+	<p>
+		i'm 20. most of my actual time goes into security stuff — pwning htb boxes, finding bugs in
+		things that should probably know better, and reading way too much about exploitation
+		primitives.
+	</p>
+
+	<p>what goes up here:</p>
+	<ul>
+		<li><strong>writeups</strong> — retired htb and ctf boxes. mostly the ones that taught me something i didn't know going in.</li>
+		<li><strong>exploits</strong> — vulns i've found in real software, with pocs. nothing goes up before disclosure.</li>
+		<li><strong>research</strong> — longer-form stuff. deep dives, weird techniques, things i figured out the hard way and wrote down so i don't have to figure them out again.</li>
+	</ul>
+
+	<p>
+		honestly i just retain things better when i have to explain them, so this is partly for me. if
+		you get something out of it, that's a bonus.
+	</p>
+</Layout>

@@ -1,0 +1,178 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const recent = (await getCollection('blog'))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 8);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<style>
+			.intro {
+				margin-bottom: 3em;
+			}
+			.intro h1 {
+				font-family: var(--font-mono);
+				font-size: 2.25em;
+				margin: 0 0 0.4em 0;
+				color: var(--accent);
+				font-weight: 600;
+			}
+			.intro h1::before {
+				content: '$ ';
+				color: var(--fg-muted);
+			}
+			.intro p {
+				color: var(--fg-muted);
+				font-family: var(--font-mono);
+				font-size: 0.95em;
+				margin: 0;
+			}
+			.intro p::before {
+				content: '# ';
+				color: var(--accent-dim);
+			}
+			.recent-header {
+				border-bottom: 1px solid var(--border);
+				padding-bottom: 0.5em;
+				margin-bottom: 1em;
+				display: flex;
+				justify-content: space-between;
+				align-items: baseline;
+			}
+			.recent-header h2 {
+				margin: 0;
+				color: var(--accent);
+				font-family: var(--font-mono);
+				font-size: 1.25em;
+				font-weight: 600;
+			}
+			.recent-header h2::before {
+				content: '> ';
+				color: var(--fg-muted);
+			}
+			.recent-header a {
+				color: var(--fg-muted);
+				font-family: var(--font-mono);
+				font-size: 0.875em;
+				border: none;
+			}
+			.recent-header a:hover {
+				color: var(--accent);
+			}
+			ul {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+			li {
+				padding: 0.7em 0;
+				border-bottom: 1px solid var(--border-muted);
+			}
+			li:last-child {
+				border-bottom: none;
+			}
+			li a {
+				display: flex;
+				gap: 1.25em;
+				align-items: baseline;
+				border: none;
+				color: var(--fg);
+				text-decoration: none;
+			}
+			li a:hover {
+				color: var(--accent);
+			}
+			li a:hover .title {
+				text-decoration: underline;
+			}
+			.date {
+				color: var(--fg-muted);
+				font-family: var(--font-mono);
+				font-size: 0.875em;
+				min-width: 7em;
+				flex-shrink: 0;
+			}
+			.cat {
+				color: var(--accent-dim);
+				font-family: var(--font-mono);
+				font-size: 0.8em;
+				min-width: 5em;
+				flex-shrink: 0;
+			}
+			.cat::before {
+				content: '[';
+				opacity: 0.5;
+			}
+			.cat::after {
+				content: ']';
+				opacity: 0.5;
+			}
+			.title {
+				flex: 1;
+			}
+			.empty {
+				color: var(--fg-muted);
+				font-family: var(--font-mono);
+				font-size: 0.9em;
+				padding: 0.7em 0;
+			}
+			.empty::before {
+				content: '# ';
+			}
+			@media (max-width: 720px) {
+				li a {
+					flex-direction: column;
+					gap: 0.2em;
+				}
+				.date,
+				.cat {
+					min-width: 0;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="intro">
+				<h1>{SITE_TITLE}</h1>
+				<p>writeups · exploits · research</p>
+			</section>
+			<section class="recent">
+				<div class="recent-header">
+					<h2>recent</h2>
+					<a href="/blog">all posts →</a>
+				</div>
+				{
+					recent.length === 0 ? (
+						<p class="empty">no posts yet</p>
+					) : (
+						<ul>
+							{recent.map((post) => (
+								<li>
+									<a href={`/blog/${post.id}/`}>
+										<span class="date">
+											<FormattedDate date={post.data.pubDate} />
+										</span>
+										<span class="cat">{post.data.category}</span>
+										<span class="title">{post.data.title}</span>
+									</a>
+								</li>
+							))}
+						</ul>
+					)
+				}
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
